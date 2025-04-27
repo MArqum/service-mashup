@@ -1,0 +1,49 @@
+#root {
+  max-width: 1280px;
+  margin: 0 ;
+  padding: 2rem;
+  text-align: center;
+}
+button.unlock_suggestions{
+  margin-top: 2rem;
+  padding:0.9rem;
+  font-size:17px;
+  font-weight:bolder;
+  outline:none;
+  border:none;
+  border-color:none;
+  background-color: white;
+  color: black;
+  cursor:pointer;
+  border-radius:8px;
+  margin-bottom: 1rem;
+  
+}
+button.unlock_suggestions:hover{
+  background-color: black;
+  color:white;
+}
+ @media(min-width:1150px){
+  button.unlock_suggestions{
+    position: relative;
+    right: 12rem;
+  }
+ }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
