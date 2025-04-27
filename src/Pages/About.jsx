@@ -1,11 +1,9 @@
 import React from "react";
 import { Footer } from '../Components/Footer';
-import { LoginNavbar } from "../Components/LoginNavbar";
 
 export const About = () => {
   return (
     <>
-    <LoginNavbar/>
       <div style={{
         display: "flex",
         alignItems: "center",

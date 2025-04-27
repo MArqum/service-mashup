@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Footer } from "../Components/Footer";
-import { LoginNavbar } from "../Components/LoginNavbar";
 
 export const Contact = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +21,6 @@ export const Contact = () => {
 
   return (
     <>
-    <LoginNavbar/>
       <div style={{
         display: "flex",
         alignItems: "center",
