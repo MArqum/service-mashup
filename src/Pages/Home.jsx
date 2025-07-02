@@ -1,10 +1,18 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { FaBars, FaUserCircle, FaSearch, FaFileContract, FaEllipsisV, FaTrash, FaTimes } from "react-icons/fa";
-import { Footer } from '../Components/Footer';
+import {
+  FaBars,
+  FaUserCircle,
+  FaSearch,
+  FaFileContract,
+  FaEllipsisV,
+  FaTrash,
+  FaTimes,
+} from "react-icons/fa";
+import { Footer } from "../Components/Footer";
 import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import axios from 'axios';
-import { debounce } from 'lodash';
+import axios from "axios";
+import { debounce } from "lodash";
 import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
@@ -26,12 +34,17 @@ export const Home = () => {
   const userId = localStorage.getItem("userId");
 
   const trendingAPIs = [
-    "Chatbot API", "Weather API", "Finance Data API",
-    "Stock Market API", "AI Text Generation API",
-    "Movie Database API", "E-commerce API"
+    "Chatbot API",
+    "Weather API",
+    "Finance Data API",
+    "Stock Market API",
+    "AI Text Generation API",
+    "Movie Database API",
+    "E-commerce API",
   ];
 
-  const apiKey = "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";
+  const apiKey =
+    "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";
 
   const handleAPISelect = (api) => {
     console.log("data of this api", api); // Log the selected API data
@@ -52,14 +65,19 @@ export const Home = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userId = localStorage.getItem('userId');
+      const userId = localStorage.getItem("userId");
       if (!userId) return;
 
       try {
-        const res = await axios.get(`http://localhost:3000/auth/user/${userId}`);
+        const res = await axios.get(
+          `http://localhost:3000/auth/user/${userId}`
+        );
         setUserName(res.data.name); // Assuming your API returns { name: "..." }
       } catch (error) {
-        console.error('Error fetching user:', error.response?.data || error.message);
+        console.error(
+          "Error fetching user:",
+          error.response?.data || error.message
+        );
       }
     };
 
@@ -88,7 +106,10 @@ export const Home = () => {
           // Add the search query to recent searches
           setRecentSearches((prevSearches) => {
             // Avoid duplicating recent search queries
-            const updatedSearches = [value, ...prevSearches.filter((item) => item !== value)];
+            const updatedSearches = [
+              value,
+              ...prevSearches.filter((item) => item !== value),
+            ];
             if (updatedSearches.length > 5) {
               updatedSearches.pop(); // Limit recent searches to 5 items
             }
@@ -111,7 +132,6 @@ export const Home = () => {
     setSearch(value); // Update the search input
     debouncedSearch(value); // Trigger the debounced search function
   };
-
 
   const deleteRecentSearch = (index) => {
     setRecentSearches(recentSearches.filter((_, i) => i !== index));
@@ -136,7 +156,10 @@ export const Home = () => {
 
     try {
       // Make a POST request to your Nest.js backend to save the API
-      const response = await axios.post("http://localhost:3000/saved-apis/save", apiData);
+      const response = await axios.post(
+        "http://localhost:3000/saved-apis/save",
+        apiData
+      );
 
       if (response.status === 201) {
         console.log(`API saved successfully: ${api.name}`);
@@ -151,11 +174,15 @@ export const Home = () => {
     }
   };
 
+  const deleteSavedAPI = async (id) => {
+    try {
+      await axios.delete(`http://localhost:3000/saved-apis/${id}`); // DELETE instead of POST
 
-
-  const deleteSavedAPI = (index) => {
-    setSavedAPIs(savedAPIs.filter((_, i) => i !== index));
-    setShowSavedDropdown(null);
+      setSavedAPIs((prev) => prev.filter((api) => api._id !== id));
+      setShowSavedDropdown(null);
+    } catch (error) {
+      console.error("Error deleting saved API:", error);
+    }
   };
 
   useEffect(() => {
@@ -167,8 +194,8 @@ export const Home = () => {
 
   const handleLogout = () => {
     // Remove userId from localStorage
-    localStorage.removeItem('userId');
-    navigate('/'); // Navigate to the landing page
+    localStorage.removeItem("userId");
+    navigate("/"); // Navigate to the landing page
   };
 
   const toggleDropdown = () => {
@@ -178,10 +205,13 @@ export const Home = () => {
   const fetchSavedAPIs = async (userId) => {
     try {
       // Make the GET request to fetch saved APIs
-      const response = await axios.get(`http://localhost:3000/saved-apis/${userId}`);
+      const response = await axios.get(
+        `http://localhost:3000/saved-apis/${userId}`
+      );
 
       if (response.status === 200) {
         setSavedAPIs(response.data); // Update state with the saved APIs
+        console.log("Saved APIs fetched successfully:", response.data);
       } else {
         console.error("Error fetching saved APIs:", response.statusText);
       }
@@ -233,14 +263,26 @@ export const Home = () => {
             }}
           >
             {!isMobile && (
-              <h2 style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "20px" }}>
+              <h2
+                style={{
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                  marginBottom: "20px",
+                }}
+              >
                 API Mashup Composer
               </h2>
             )}
 
             {/* Recent Searches */}
             <div>
-              <h3 style={{ fontSize: "17px", fontWeight: "bold", marginBottom: "10px" }}>
+              <h3
+                style={{
+                  fontSize: "17px",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                }}
+              >
                 Recent Searches
               </h3>
               {recentSearches.length > 0 ? (
@@ -293,11 +335,24 @@ export const Home = () => {
 
             {/* Trending APIs */}
             <div style={{ marginTop: "25px" }}>
-              <h3 style={{ fontSize: "17px", fontWeight: "bold", marginBottom: "10px" }}>
+              <h3
+                style={{
+                  fontSize: "17px",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                }}
+              >
                 Trending APIs
               </h3>
               {trendingAPIs.map((api, index) => (
-                <div key={index} style={{ padding: "6px 0", cursor: "pointer" }}>
+                <div
+                  key={index}
+                  onClick={() => {
+                    setSearch(api); // Set search bar to this API
+                    debouncedSearch(api); // Trigger search (optional)
+                  }}
+                  style={{ padding: "6px 0", cursor: "pointer" }}
+                >
                   {api}
                 </div>
               ))}
@@ -305,7 +360,13 @@ export const Home = () => {
 
             {/* Saved APIs */}
             <div style={{ marginTop: "23px" }}>
-              <h3 style={{ fontSize: "17px", fontWeight: "bold", marginBottom: "10px" }}>
+              <h3
+                style={{
+                  fontSize: "17px",
+                  fontWeight: "bold",
+                  marginBottom: "10px",
+                }}
+              >
                 Saved APIs
               </h3>
               {savedAPIs.length > 0 ? (
@@ -320,10 +381,13 @@ export const Home = () => {
                       position: "relative",
                     }}
                   >
-                    <span>{api.name}</span> {/* Assuming 'name' is a property */}
+                    <span>{api.name}</span>{" "}
+                    {/* Assuming 'name' is a property */}
                     <FaEllipsisV
                       onClick={() =>
-                        setShowSavedDropdown(index === showSavedDropdown ? null : index)
+                        setShowSavedDropdown(
+                          index === showSavedDropdown ? null : index
+                        )
                       }
                       style={{ cursor: "pointer" }}
                     />
@@ -343,7 +407,7 @@ export const Home = () => {
                       >
                         {/* Delete button */}
                         <div
-                          onClick={() => deleteSavedAPI(index)}
+                          onClick={() => deleteSavedAPI(api._id)}
                           style={{ cursor: "pointer", padding: "5px" }} // Make it match the button style
                         >
                           <FaTrash /> Delete
@@ -370,7 +434,6 @@ export const Home = () => {
               )}
             </div>
 
-
             {/* Links */}
             <div style={{ marginTop: "40px" }}>
               <Link
@@ -384,7 +447,10 @@ export const Home = () => {
               >
                 <FaFileContract /> Terms of Services
               </Link>
-              <Link to="/privacypolicy" style={{ color: "white", textDecoration: "none" }}>
+              <Link
+                to="/privacypolicy"
+                style={{ color: "white", textDecoration: "none" }}
+              >
                 <FaFileContract /> Privacy Policy
               </Link>
             </div>
@@ -402,47 +468,50 @@ export const Home = () => {
         >
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'right',
-              alignItems: 'center',
-              marginBottom: '1rem',
+              display: "flex",
+              justifyContent: "right",
+              alignItems: "center",
+              marginBottom: "1rem",
             }}
           >
             <FaUserCircle
-              style={{ fontSize: '32px', color: '#444658', cursor: 'pointer' }}
+              style={{ fontSize: "32px", color: "#444658", cursor: "pointer" }}
               onClick={toggleDropdown} // Toggle dropdown on icon click
             />
             <span
               style={{
-                marginLeft: '12px',
-                fontSize: '18px',
-                fontWeight: 'bold',
-                cursor: 'pointer',
+                marginLeft: "12px",
+                fontSize: "18px",
+                fontWeight: "bold",
+                cursor: "pointer",
               }}
               onClick={toggleDropdown}
             >
-              {userName || 'Loading...'}
+              {userName || "Loading..."}
             </span>
 
             {/* Dropdown Menu */}
             {isDropdownOpen && (
               <div
                 style={{
-                  position: 'absolute',
-                  top: '100px', // Adjust this based on your layout
-                  right: '170px', // Adjust as needed
-                  backgroundColor: '#fff',
-                  boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-                  borderRadius: '8px',
-                  padding: '10px',
-                  zIndex: '1000',
+                  position: "absolute",
+                  top: "100px", // Adjust this based on your layout
+                  right: "170px", // Adjust as needed
+                  backgroundColor: "#fff",
+                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                  borderRadius: "8px",
+                  padding: "10px",
+                  zIndex: "1000",
                 }}
               >
-                <div style={{ padding: '8px 0', cursor: 'pointer' }} onClick={() => alert('Reset password option')}>
+                <div
+                  style={{ padding: "8px 0", cursor: "pointer" }}
+                  onClick={() => alert("Reset password option")}
+                >
                   Reset Password
                 </div>
                 <div
-                  style={{ padding: '8px 0', cursor: 'pointer', color: 'red' }}
+                  style={{ padding: "8px 0", cursor: "pointer", color: "red" }}
                   onClick={handleLogout}
                 >
                   Logout
@@ -463,16 +532,39 @@ export const Home = () => {
           </Typography>
 
           {/* Search Section */}
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "1rem", width: "100%" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: "1rem",
+              width: "100%",
+            }}
+          >
             {/* Search bar */}
-            <div style={{ display: "flex", alignItems: "center", backgroundColor: "white", padding: "12px", borderRadius: "8px", boxShadow: "0px 0px 8px rgba(0,0,0,0.2)", width: "60%" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                backgroundColor: "white",
+                padding: "12px",
+                borderRadius: "8px",
+                boxShadow: "0px 0px 8px rgba(0,0,0,0.2)",
+                width: "60%",
+              }}
+            >
               <FaSearch style={{ marginRight: "10px", color: "gray" }} />
               <input
                 type="text"
                 placeholder={`Search by ${filter}`}
                 value={search}
                 onChange={handleSearch}
-                style={{ width: "100%", border: "none", outline: "none", fontSize: "16px" }}
+                style={{
+                  width: "100%",
+                  border: "none",
+                  outline: "none",
+                  fontSize: "16px",
+                }}
                 onKeyPress={(e) => e.key === "Enter" && debouncedSearch(search)} // Ensure Enter key works too
               />
             </div>
@@ -492,49 +584,64 @@ export const Home = () => {
           {loading && <div>Loading...</div>}
 
           {/* Displaying API Results in a Dropdown */}
-          {Array.isArray(apiResults) && apiResults.length > 0 && search && ( // Check if search is not empty
-            <div
-              style={{
-                maxHeight: "200px",
-                overflowY: "hidden",
-                marginTop: "5px",
-                backgroundColor: "white",
-                boxShadow: "0px 10px 10px rgba(0,0,0,0.1)",
-                padding: "10px",
-                borderRadius: "8px",
-              }}
-            >
-              {apiResults.map((result, index) => (
-                <div
-                  key={index}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    padding: "8px 0",
-                    fontSize: "14px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <div>{result.name}</div>
-                  <div>{result.api_url}</div>
-                  <button
-                    onClick={() => saveAPI(result)} // Pass the whole result object
+          {Array.isArray(apiResults) &&
+            apiResults.length > 0 &&
+            search && ( // Check if search is not empty
+              <div
+                style={{
+                  maxHeight: "200px",
+                  overflowY: "hidden",
+                  marginTop: "5px",
+                  backgroundColor: "white",
+                  boxShadow: "0px 10px 10px rgba(0,0,0,0.1)",
+                  padding: "10px",
+                  borderRadius: "8px",
+                }}
+              >
+                {apiResults.map((result, index) => (
+                  <div
+                    key={index}
                     style={{
-                      backgroundColor: "#007bff",
-                      color: "white",
-                      border: "none",
-                      padding: "6px 12px",
-                      borderRadius: "5px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      padding: "8px 0",
+                      fontSize: "14px",
                       cursor: "pointer",
                     }}
                   >
-                    Save
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-
+                    <div
+                      onClick={() => {
+                        setSelectedAPI({
+                          ...result,
+                          apiUrl: result.api_url, // Ensure compatibility with modal
+                        });
+                        setIsModalVisible(true);
+                      }}
+                      style={{ flex: 1 }}
+                    >
+                      {result.name}
+                    </div>
+                    <div style={{ flex: 1 }}>{result.api_url}</div>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation(); // prevent parent click
+                        saveAPI(result);
+                      }}
+                      style={{
+                        backgroundColor: "#007bff",
+                        color: "white",
+                        border: "none",
+                        padding: "6px 12px",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Save
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
 
           <div
             style={{
@@ -562,7 +669,6 @@ export const Home = () => {
                   position: "relative", // To position the close button
                 }}
               >
-
                 <FaTimes
                   onClick={handleCloseModal}
                   style={{
@@ -690,12 +796,10 @@ export const Home = () => {
               </div>
             )}
           </div>
-
         </div>
       </div>
 
       <Footer />
     </>
   );
-
 };
